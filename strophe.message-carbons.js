@@ -43,25 +43,32 @@
 			if (typeof _onCarbon !== "function")
 				return true;
 
-			var subMessage = $(msg).find("sent > forwarded > message");
+			var subMessage = msg.querySelector("sent > forwarded > message");
 			if (subMessage) {
 				var item = new CarbonMessage();
 				item.direction = "sent";
-				item.type = $(subMessage).attr('type')
-				item.to = $(subMessage).attr('to');
-				item.from = $(subMessage).attr('from');
+				item.type = subMessage.getAttribute('type')
+				item.to = subMessage.getAttribute('to');
+				item.from = subMessage.getAttribute('from');
 				item.innerMessage = subMessage;
 				_onCarbon(item);
 			}
-
-			var subMessage = $(msg).find("received > forwarded > message");
-			if (subMessage) {
+			else if (subMessage = msg.querySelector("received > forwarded > message")) {
 				var item = new CarbonMessage();
 				item.direction = "received";
-				item.type = $(subMessage).attr('type')
-				item.to = $(subMessage).attr('to');
-				item.from = $(subMessage).attr('from');
+				item.type = subMessage.getAttribute('type')
+				item.to = subMessage.getAttribute('to');
+				item.from = subMessage.getAttribute('from');
 				item.innerMessage = subMessage;
+				_onCarbon(item);
+			}
+			else {
+				var item = new CarbonMessage();
+				item.direction = "received";
+				item.type = msg.getAttribute('type')
+				item.to = msg.getAttribute('to');
+				item.from = msg.getAttribute('from');
+				item.innerMessage = msg;
 				_onCarbon(item);
 			}
 
